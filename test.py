@@ -1,2 +1,3 @@
 str = "Hello World!"
-print(str)
+for i in range(1,5):
+	print(str)
