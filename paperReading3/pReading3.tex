@@ -1,0 +1,41 @@
+\documentclass[12pt]{article}
+
+\title{\bf{Paper reading for Voronoi Diagram in The Laguerre Geometry and its Applications}}
+\date{}
+\usepackage{CJK}
+\begin{document}
+
+\maketitle
+
+\begin{CJK}{UTF8}{bkai}
+
+\centerline{\bf 問題定義}
+
+本問題想要在 {\it Laguerre geometry} 上求出 {\it Voronoi diagram}。\\
+
+將一個三維空間的點~$(x,y,z)$~對應到歐氏平面上是一個半徑為~$|z|$~且圓心為~$(x,y)$~的圓，
+而且此圓的旋轉方向是根據~$z$~的正負值，則稱為 {\it Laguerre geometry}。\\
+
+在二維空間的一圓~$C_i=C_i(Q_i;r_i)$~，其中圓心為~$Q_i=(x_i,y_i)$~
+，半徑為~$r_i$~。~$C_i$~和~$P=(x,y)$~之間的距離~$d_L(C_i,P)$~之定義如下：
+
+\begin{equation}
+d_L^2(C_i,P)=(x-x_i)^2+(y-y_i)^2-r_i^2
+\end{equation}
+
+因此，在 {\it Laguerre geometry} 上 $n$ 個圓 $C_i=C_i(Q_i;r_i)(Q_i=(x_i,y_i))$ 的 {\it Voronoi polygons} 的定義如下：
+
+\begin{equation}
+V(C_i)=\cap_i \{P \in R^2 | d_L^2(C_i,P) \leq d_L^2(C_j,P) \}
+\end{equation}
+
+求出所有的 {\it Voronoi polygons} ，就是我們要的 {\it Voronoi diagram}。\\
+
+
+\centerline{\bf 方法說明}
+
+\centerline{\bf 時間複雜度分析}
+
+\end{CJK}
+
+\end{document}
