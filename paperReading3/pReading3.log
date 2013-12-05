@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.1.14)  5 DEC 2013 20:05
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.1.14)  5 DEC 2013 20:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -169,59 +169,66 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
+
+ []
+
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./pReading3.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] (./pReading3.aux) ) 
 Here is how much of TeX's memory you used:
- 1596 strings out of 493485
- 19870 string characters out of 3143526
- 67714 words of memory out of 3000000
- 4906 multiletter control sequences out of 15000+200000
- 21055 words of font info for 74 fonts, out of 3000000 for 9000
+ 1609 strings out of 493485
+ 20105 string characters out of 3143526
+ 68714 words of memory out of 3000000
+ 4917 multiletter control sequences out of 15000+200000
+ 21651 words of font info for 76 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  22i,6n,21p,169b,405s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/s
-hare/texmf/fonts/type1/arphic/bkaiu/bkaiu30.pfb></usr/share/texmf/fonts/type1/a
-rphic/bkaiu/bkaiu4e.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu4f.pfb>
-</usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu50.pfb></usr/share/texmf/fonts/
-type1/arphic/bkaiu/bkaiu51.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu
-52.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu53.pfb></usr/share/texmf
-/fonts/type1/arphic/bkaiu/bkaiu54.pfb></usr/share/texmf/fonts/type1/arphic/bkai
-u/bkaiu55.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu56.pfb></usr/shar
-e/texmf/fonts/type1/arphic/bkaiu/bkaiu57.pfb></usr/share/texmf/fonts/type1/arph
-ic/bkaiu/bkaiu59.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu5b.pfb></u
-sr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu5c.pfb></usr/share/texmf/fonts/typ
-e1/arphic/bkaiu/bkaiu5e.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu5f.
-pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu60.pfb></usr/share/texmf/fo
-nts/type1/arphic/bkaiu/bkaiu61.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/b
-kaiu62.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu64.pfb></usr/share/t
-exmf/fonts/type1/arphic/bkaiu/bkaiu65.pfb></usr/share/texmf/fonts/type1/arphic/
-bkaiu/bkaiu66.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu67.pfb></usr/
-share/texmf/fonts/type1/arphic/bkaiu/bkaiu68.pfb></usr/share/texmf/fonts/type1/
-arphic/bkaiu/bkaiu6a.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu6b.pfb
-></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu6c.pfb></usr/share/texmf/fonts
-/type1/arphic/bkaiu/bkaiu70.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkai
-u76.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu7a.pfb></usr/share/texm
-f/fonts/type1/arphic/bkaiu/bkaiu7d.pfb></usr/share/texmf/fonts/type1/arphic/bka
-iu/bkaiu7f.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu80.pfb></usr/sha
-re/texmf/fonts/type1/arphic/bkaiu/bkaiu89.pfb></usr/share/texmf/fonts/type1/arp
-hic/bkaiu/bkaiu8a.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu8c.pfb></
-usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu8d.pfb></usr/share/texmf/fonts/ty
-pe1/arphic/bkaiu/bkaiu8f.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu95
-.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu96.pfb></usr/share/texmf/f
-onts/type1/arphic/bkaiu/bkaiu97.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/
-bkaiu98.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu9e.pfb></usr/share/
-texmf/fonts/type1/arphic/bkaiu/bkaiuff.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on pReading3.pdf (1 page, 208287 bytes).
+</u
+sr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu30.pfb></usr/share/texmf/fonts/typ
+e1/arphic/bkaiu/bkaiu4e.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu4f.
+pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu50.pfb></usr/share/texmf/fo
+nts/type1/arphic/bkaiu/bkaiu51.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/b
+kaiu52.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu53.pfb></usr/share/t
+exmf/fonts/type1/arphic/bkaiu/bkaiu54.pfb></usr/share/texmf/fonts/type1/arphic/
+bkaiu/bkaiu55.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu56.pfb></usr/
+share/texmf/fonts/type1/arphic/bkaiu/bkaiu57.pfb></usr/share/texmf/fonts/type1/
+arphic/bkaiu/bkaiu59.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu5b.pfb
+></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu5c.pfb></usr/share/texmf/fonts
+/type1/arphic/bkaiu/bkaiu5e.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkai
+u5f.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu60.pfb></usr/share/texm
+f/fonts/type1/arphic/bkaiu/bkaiu61.pfb></usr/share/texmf/fonts/type1/arphic/bka
+iu/bkaiu62.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu64.pfb></usr/sha
+re/texmf/fonts/type1/arphic/bkaiu/bkaiu65.pfb></usr/share/texmf/fonts/type1/arp
+hic/bkaiu/bkaiu66.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu67.pfb></
+usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu68.pfb></usr/share/texmf/fonts/ty
+pe1/arphic/bkaiu/bkaiu6a.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu6b
+.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu6c.pfb></usr/share/texmf/f
+onts/type1/arphic/bkaiu/bkaiu70.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/
+bkaiu75.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu76.pfb></usr/share/
+texmf/fonts/type1/arphic/bkaiu/bkaiu7a.pfb></usr/share/texmf/fonts/type1/arphic
+/bkaiu/bkaiu7d.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu7f.pfb></usr
+/share/texmf/fonts/type1/arphic/bkaiu/bkaiu80.pfb></usr/share/texmf/fonts/type1
+/arphic/bkaiu/bkaiu81.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu89.pf
+b></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu8a.pfb></usr/share/texmf/font
+s/type1/arphic/bkaiu/bkaiu8c.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bka
+iu8d.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu8f.pfb></usr/share/tex
+mf/fonts/type1/arphic/bkaiu/bkaiu95.pfb></usr/share/texmf/fonts/type1/arphic/bk
+aiu/bkaiu96.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiu97.pfb></usr/sh
+are/texmf/fonts/type1/arphic/bkaiu/bkaiu98.pfb></usr/share/texmf/fonts/type1/ar
+phic/bkaiu/bkaiu9e.pfb></usr/share/texmf/fonts/type1/arphic/bkaiu/bkaiuff.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmti12.pfb>
+Output written on pReading3.pdf (2 pages, 217930 bytes).
 PDF statistics:
- 213 PDF objects out of 1000 (max. 8388607)
- 157 compressed objects within 2 object streams
+ 224 PDF objects out of 1000 (max. 8388607)
+ 165 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
