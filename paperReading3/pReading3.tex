@@ -46,12 +46,23 @@ L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
 
 %merge
 
-合併兩個 {\it Voronoi diagram} 之前，需要先找出兩者之間的 {\it dividing line}。{\it Dividing line}
- 是由兩個 {\it rays} 和多個 {\it line segments} 組成，所以第一個問題是要如何找出那兩個 {\it rays}。\\
+合併兩個 {\it Voronoi diagram} 之前，需要先找出兩者之間的 {\it dividing line}。 Dividing line
+ 是由兩個 {\it rays} 和多個 {\it line segments} 組成，所以第一個問題是要如何找出那兩個 rays。\\
 
-%how to find the two rays ( see Lemma 4, and refer.[9]  )
+%how to find the two rays ( see Lemma 7, or Lemma 5  )
 
-%how to trace the several line segments ( see Lemma 5  )
+一開始先建出 $L$ 和 $R$ 的 {\it convex hulls}，它們的 convex hulls 分別是 CH($L$) 和 CH($R$)，
+然後再建出 $L \cup R$ 的 convex hulls CH($L \cup R$)。
+把 CH($L \cup R$) 和另外兩個 convex hulls 做比較，就會發現有新的兩個 line segments 連接著
+ CH($L$) 和 CH($R$)。
+之後就從那兩個 line segments 求出兩個 rays。\\
+
+%how to trace the several line segments ( see Lemma 4, and refer.[9]  )
+
+從這兩條 rays 往圖形內部延伸，並且不斷地去做順時鐘方向和逆時鐘方向去調整，直到兩個 rays 連在一起，
+就形成我們要的 dividing line。\\
+
+\centerline{\bf 例子}
 
 \centerline{\bf 時間複雜度分析}
 
