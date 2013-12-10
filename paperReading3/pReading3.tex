@@ -1,5 +1,7 @@
 \documentclass[12pt]{article}
 
+\usepackage{graphicx}
+
 \title{\bf{Paper reading for Voronoi Diagram in The Laguerre Geometry and its Applications}}
 \date{}
 \usepackage{CJK}
@@ -58,12 +60,19 @@ L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
 之後就從那兩個 line segments 求出兩個 rays。\\
 
 從新生的 line segments 的特性觀察，發現有特性稱為 {\it degenerate}。所謂的 degenerate ，
-是指新的 convex hull edges 與相鄰的舊的 convex hull edges 都在同一線上，如下面 Figure 1 所示：
+是指新的 convex hull edges 與相鄰的舊的 convex hull edges 都在同一線上，如下面 Figure 1 所示：\\
 
 %Fig. 5.(i)
 
-明顯地，某些新舊 convex hull edges 都在 $l$ 線上。上圖 Figure 1 上面實線部份，就是沒有 degenerate
- 特性的例子。
+\begin{figure}
+\includegraphics[scale=0.5]{figure5(i).eps}
+\caption{}
+\label{}
+\end{figure}
+
+明顯地，某些新舊 convex hull edges 都在 $l$ 線上。上圖 Figure 1 中上面實線部份，就是沒有 degenerate
+ 特性的例子。如果是沒有 degenerate 的特性，只要在 $l$ 上 $L$ 與 $R$ 中最接近的兩點取 {\it radical axis}
+ 即可；degenerate 的例子，則需要把 $l$ 分成 $L_l \subseteq L$ 和 $R_l \subseteq R$兩個集合。
 
 %how to trace the several line segments ( see Lemma 4, and refer.[9]  )
 
