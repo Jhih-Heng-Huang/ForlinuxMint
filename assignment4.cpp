@@ -5,9 +5,9 @@
 
 struct ineq
 {
-	int coefX;
-	int coefY;
-	int constant;
+	double coefX;
+	double coefY;
+	double constant;
 };
 
 void readInput( std::vector<ineq>& buffer, std::string inputFile )
@@ -29,16 +29,15 @@ void readInput( std::vector<ineq>& buffer, std::string inputFile )
 	file.close();
 }
 
+
+
 int main()
 {
 	std::vector<ineq> buffer;
 
 	readInput(buffer,"input.txt");
 
-	for( size_t i = 0; i < buffer.size(); ++i )
-	{
-		std::cout << buffer[i].coefX << "\t" << buffer[i].coefY << "\t" << buffer[i].constant << std::endl;
-	}
+
 	
 	return 0;
 }
