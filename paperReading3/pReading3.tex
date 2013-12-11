@@ -72,12 +72,22 @@ L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
 
 明顯地，某些新舊 convex hull edges 都在 $l$ 線上。上圖 Figure 1 中上面實線部份，就是沒有 degenerate
  特性的例子。如果是沒有 degenerate 的特性，只要在 $l$ 上 $L$ 與 $R$ 中最接近的兩點取 {\it radical axis}
- 即可；degenerate 的例子，則需要把 $l$ 分成 $L_l \subseteq L$ 和 $R_l \subseteq R$兩個集合。
+ 即可；degenerate 的例子，則需要把 $l$ 分成 $L_l \subseteq L$ 和 $R_l \subseteq R$兩個集合。將兩個 Voronoi
+ diagram $V(L_l)$ 和 $V(R_l)$ 合併，方法就類似兩個排序好的 list 合併成一個排序好的 list 。也就是說，將 $V(L_l)$
+ 和 $V(R_l)$ 中的 Voronoi edges 依照由左到右排序好，並且合併起來，如下圖 Figure 2：
+
+%insert the picture Fig. 5(iv)
+
+如上圖，每相鄰兩個 Voronoi edges 夾出的區域為 $V(L_l)$ 中某個 Voronoi polygon $V(C_i)$ 和 $V(R_l)$ 中某個 Voronoi polygon
+ $V(C_j)$ 的交集。因此，我們只需要求每個 $C_i$ 與 $C_j$ 的 radical axis，是否落在它們交集的區域內；若符合上述條件，則
+那個 radical axis 是我們要的 ray。
 
 %how to trace the several line segments ( see Lemma 4, and refer.[9]  )
 
-從這兩條 rays 往圖形內部延伸，並且不斷地去做順時鐘方向和逆時鐘方向去調整，直到兩個 rays 連在一起，
-就形成我們要的 dividing line。\\
+從這兩條 rays 往圖形內部延伸，並且不斷地去做順時鐘方向和逆時鐘方向去調整，方法與歐式平面上的演算法相同。
+當兩個 rays 連在一起，就形成我們要的 dividing line。\\
+
+
 
 \centerline{\bf 例子}
 
