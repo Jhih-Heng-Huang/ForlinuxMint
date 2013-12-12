@@ -37,8 +37,8 @@ V(C_i)=\cap_i \{P \in R^2 | d_L^2(C_i,P) \leq d_L^2(C_j,P) \}
 \centerline{\bf 方法說明}
 
 %devide
-假設一個 set $S={C_i(Q_i;r_i)|i=1,2,...,n}$，我們要把 $S$ 分成兩個 subsets $L$ 和 $R$。也就是說，
-根據所有 $Q_i$ 的 $x$ 座標大小找出中位數 $m$，再來分成兩個 subsets 如下式子：
+假設一個 set $S=\{C_i(Q_i;r_i)|i=1,2,...,n\}$，我們要把 $S$ 分成兩個 subsets $L$ 和 $R$。也就是說，
+根據所有 $Q_i$ 的 $x$ 座標大小找出中位數 $m$ ，再來分成兩個 subsets 如下式子：
 
 \[
 L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
@@ -64,13 +64,13 @@ L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
 
 %Fig. 5.(i)
 
-\begin{figure}
+\begin{figure}[h]
 \includegraphics[scale=0.5]{figure5(i).eps}
 \caption{}
 \label{}
 \end{figure}
 
-明顯地，某些新舊 convex hull edges 都在 $l$ 線上。在 Figure 1 中上面實線部份，就是沒有 degenerate
+明顯地， Figure 1 上某些新舊 convex hull edges 都在 $l$ 線上。在 Figure 1 中上面實線部份(非 $l$ 線段)，就是沒有 degenerate
  特性的例子。如果是沒有 degenerate 的特性，只要在 $l$ 上 $L$ 與 $R$ 中最接近的兩點取 {\it radical axis}
  即可；degenerate 的例子，則需要把 $l$ 分成 $L_l \subseteq L$ 和 $R_l \subseteq R$兩個集合。將兩個 Voronoi
  diagram $V(L_l)$ 和 $V(R_l)$ 合併，方法就類似兩個排序好的 list 合併成一個排序好的 list 。也就是說，將 $V(L_l)$
@@ -78,7 +78,7 @@ L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
 
 %insert the picture Fig. 5(iv)
 
-\begin{figure}
+\begin{figure}[h]
 \includegraphics[scale=0.5]{figure5(iv).eps}
 \caption{}
 \label{}
@@ -91,13 +91,53 @@ L=\{Q_i| x_i < m \},~R=\{Q_i| x_i \geq m \}
 %how to trace the several line segments ( see Lemma 4, and refer.[9]  )
 
 從這兩條 rays 往圖形內部延伸，並且不斷地去做順時鐘方向和逆時鐘方向去調整，方法與歐式平面上的演算法相同。
-當兩個 rays 連在一起，就形成我們要的 dividing line。\\
+當兩個 rays 連在一起，就形成我們要的 dividing line 。\\
 
 
 
 \centerline{\bf 例子}
 
+Figure 3 上的 13 個圓為初始輸入，演算法步驟如下：
+
+\begin{enumerate}
+
+\item 找出 13 個圓心在 x 軸上的中位數，並且分開來，如 Figure 4 。
+\item 左右兩邊繼續切割，直到剩下一個或兩個點就停止切割，如 Figure 5 。
+\item 兩邊分別畫出各自的 Voronoi diagram 之後，就開始合併兩邊的 diagram
+最後如 Figure 6 。
+\item 左右兩邊畫出各自的 convex hull ，再將兩邊的 convex hull 合併，如 Figure 7 。
+\item Figure 7 中 $l_1$ 不為 degenerate case ，所以直接求 radical axis 即可，如
+ Figure 8 。
+\item $l_2$ 為 degenerate case ，所以將與 $l_2$ 共線的一起討論，如 Figure 9 。
+\item 將與 $l_2$ 垂直的所有 Voronoi edges 合併並有左到右排序好，如 Figure 10 。
+\item 將 
+
+\end{enumerate}
+
+%Fig 3
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure3.eps}
+\caption{}
+\end{figure}
+
+%Fig 4
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure5(i).eps}
+\caption{}
+\end{figure}
+
 \centerline{\bf 時間複雜度分析}
+
+此演算法有三大部份：{\it divide} 、 {\it conquer} 、和 {\it merge} 。假設時間複雜度為 $T(n)$，
+那三大部份的時間複雜度分析如下：\\
+
+\begin{enumerate}
+\item {\it divide} ：$O(n)$\\
+\item {\it conquer} ： $2T(n/2)$\\
+\item {\it merge} ： $O(n)$\\
+\end{enumerate}
+
+所以總時間複雜度 $T(n)=2T(n/2)+2O(n)=O(n\log n)$ 。
 
 \end{CJK}
 
