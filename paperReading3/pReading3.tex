@@ -116,7 +116,7 @@ Figure 3 上的 13 個圓為初始輸入，演算法步驟如下：
 \item 對每一個區域所對應的兩個圓求出 radical axis ，看是否落在對應的區域內。做完發現
  $V(C_3)$ 和 $V(C_6)$ 的 radical axis 有落在區間內，所以 ray 就求出來了，如 Figure 11 。
 \item 兩個 rays 求完好後，就接著求出 dividing line 中間的 line segments 。方法就是先將某一條
- ray 往內延伸，延伸到要超出某個 Voronoi polygon 時，就讓 ray 轉向，如 Figure 12 。
+ ray 往內延伸，每延伸到要超出某個 Voronoi polygon 時，就讓 ray 轉向，直到與另一的 ray 接在一起，如 Figure 12 。
 \item 最後結果如 Figure 13 。
 
 \end{enumerate}
