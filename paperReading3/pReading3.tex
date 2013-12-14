@@ -108,16 +108,16 @@ Figure 3 上的 13 個圓為初始輸入，演算法步驟如下：
 \item 左右兩邊畫出各自的 convex hull ，再將兩邊的 convex hull 合併，如 Figure 7 。
 \item Figure 7 中 $l_1$ 不為 degenerate case ，所以直接求 radical axis 即可，如
  Figure 8 。
-\item $l_2$ 為 degenerate case ，所以將與 $l_2$ 共線的一起討論，如 Figure 9 。
-\item 將與 $l_2$ 垂直的所有 Voronoi edges 合併並有左到右排序好，如 Figure 10 。
-\item 在 Figure 10 中兩兩相鄰的 Voronoi edges 的區域由左到右分別是 $V(C_1)$ 和 $V(C_5)$ 的交集、
+\item $l_2$ 為 degenerate case ，所以將與 $l_2$ 共線的一起討論。
+\item 將與 $l_2$ 垂直的所有 Voronoi edges 合併並有左到右排序好，如 Figure 9 。
+\item 在 Figure 9 中兩兩相鄰的 Voronoi edges 的區域由左到右分別是 $V(C_1)$ 和 $V(C_5)$ 的交集、
  $V(C_2)$ 和 $V(C_5)$ 的交集、$V(C_3)$ 和 $V(C_5)$ 的交集、 $V(C_3)$ 和 $V(C_6)$ 的交集
 、$V(C_4)$ 和 $V(C_6)$、$V(C_4)$ 和 $V(C_7)$ 的交集。
 \item 對每一個區域所對應的兩個圓求出 radical axis ，看是否落在對應的區域內。做完發現
- $V(C_3)$ 和 $V(C_6)$ 的 radical axis 有落在區間內，所以 ray 就求出來了，如 Figure 11 。
+ $V(C_3)$ 和 $V(C_6)$ 的 radical axis 有落在區間內，所以 ray 就求出來了，如 Figure 10 。
 \item 兩個 rays 求完好後，就接著求出 dividing line 中間的 line segments 。方法就是先將某一條
- ray 往內延伸，每延伸到要超出某個 Voronoi polygon 時，就讓 ray 轉向，直到與另一的 ray 接在一起，如 Figure 12 。
-\item 最後結果如 Figure 13 。
+ ray 往內延伸，每延伸到要超出某個 Voronoi polygon 時，就讓 ray 轉向，直到與另一的 ray 接在一起，如 Figure 11 。
+\item 最後結果如 Figure 12 。
 
 \end{enumerate}
 
@@ -150,6 +150,48 @@ Figure 3 上的 13 個圓為初始輸入，演算法步驟如下：
 %Fig 5
 \begin{figure}[h]
 \includegraphics[scale=0.4]{figure5.eps}
+\caption{}
+\end{figure}
+
+%Fig 6
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure6.eps}
+\caption{}
+\end{figure}
+
+%Fig 7
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure7.eps}
+\caption{}
+\end{figure}
+
+%Fig 8
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure8.eps}
+\caption{}
+\end{figure}
+
+%Fig 9
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure9.eps}
+\caption{}
+\end{figure}
+
+%Fig 10
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure5(iv).eps}
+\caption{}
+\end{figure}
+
+%Fig 11
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure11.eps}
+\caption{}
+\end{figure}
+
+%Fig 12
+\begin{figure}[h]
+\includegraphics[scale=0.4]{figure12.eps}
 \caption{}
 \end{figure}
 
