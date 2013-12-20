@@ -2,7 +2,9 @@
 #include <vector>
 #include <cstdlib>
 #include <iostream>
+#include <cmath>
 
+// coefX * x + coefY * y <= constant
 struct ineq
 {
 	double coefX;
@@ -29,7 +31,11 @@ void readInput( std::vector<ineq>& buffer, std::string inputFile )
 	file.close();
 }
 
-
+// pruning & search for 2D linear programming
+double linearProg_2D_PS( std::vector<ineq>& buffer, double x_l, double x_r )
+{
+	return 0;
+}
 
 int main()
 {
@@ -37,7 +43,9 @@ int main()
 
 	readInput(buffer,"input.txt");
 
-
+	// pruning & search for 2D linear programming
+	linearProg_2D_PS( buffer, -HUGE_VAL, HUGE_VAL );
 	
+
 	return 0;
 }
