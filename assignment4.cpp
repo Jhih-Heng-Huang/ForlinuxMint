@@ -12,8 +12,16 @@ struct ineq
 	double constant;
 };
 
+// data type of 3 classes of constraints
+struct constraint
+{
+	std::vector<ineq> xAxisConstraints;
+	std::vector<ineq> ubLines;
+	std::vector<ineq> lbLines;
+};
+
 // divide the input to 3 classes: I^0, I^+, I^-
-void readInput( std::vector<ineq>& xRangeConstraints, std::vector<ineq>& ubLines, std::vector<ineq>& lbLines, std::string inputFile )
+void readInput( constraint& buffer, std::string inputFile )
 {
 	std::ifstream file;
 	ineq area;
@@ -29,15 +37,15 @@ void readInput( std::vector<ineq>& xRangeConstraints, std::vector<ineq>& ubLines
 		
 		if( area.coefY == 0 )
 		{
-			xRangeConstraints.push_back(area);
+			buffer.xAxisConstraints.push_back(area);
 		}
 		else if( area.coefY > 0 )
 		{
-			ubLines.push_back(area);
+			buffer.ubLines.push_back(area);
 		}
 		else
 		{
-			lbLines.push_back(area);
+			buffer.lbLines.push_back(area);
 		}
 	}
 
@@ -45,17 +53,17 @@ void readInput( std::vector<ineq>& xRangeConstraints, std::vector<ineq>& ubLines
 }
 
 // pruning & search for 2D linear programming
-double linearProg_2D_PS( std::vector<ineq>& buffer, double x_l, double x_r )
+double linearProg_2D_PS( constraint& buffer, double x_l, double x_r )
 {
 	return 0;
 }
 
 int main()
 {
-	std::vector<ineq> xRangeConstraints, ubLines, lbLines;
+	constraint buffer;
 
 	// divide the input to 3 classes: I^0, I^+, I^-
-	readInput(xRangeConstraints, ubLines, lbLines,"input.txt");
+	readInput(buffer,"input.txt");
 
 
 
