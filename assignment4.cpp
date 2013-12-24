@@ -15,9 +15,10 @@ struct ineq
 // data type of 3 classes of constraints
 struct constraint
 {
-	std::vector<ineq> xAxisConstraints;
 	std::vector<ineq> ubLines;
 	std::vector<ineq> lbLines;
+	double u_1;
+	double u_2;
 };
 
 // divide the input to 3 classes: I^0, I^+, I^-
@@ -31,13 +32,29 @@ void readInput( constraint& buffer, std::string inputFile )
 
 	file >> numArea;
 
+	buffer.u_1 = -HUGE_VAL;
+	buffer.u_2 = HUGE_VAL;
+
 	for( int i = 0; i < numArea; ++i )
 	{
 		file >> area.coefX >> area.coefY >> area.constant;
 		
 		if( area.coefY == 0 )
 		{
-			buffer.xAxisConstraints.push_back(area);
+			if( area.coefX > 0 )
+			{
+				if( buffer.u_2 > (area.constant/area.coefX) )
+				{
+					buffer.u_2 = area.constant/area.coefX;
+				}
+			}
+			else
+			{
+				if( buffer.u_1 < (area.constant/area.coefX) )
+				{
+					buffer.u_1 = area.constant/area.coefX;
+				}
+			}
 		}
 		else if( area.coefY > 0 )
 		{
@@ -53,7 +70,7 @@ void readInput( constraint& buffer, std::string inputFile )
 }
 
 // pruning & search for 2D linear programming
-double linearProg_2D_PS( constraint& buffer, double x_l, double x_r )
+double linearProg_2D_PS( constraint& buffer )
 {
 	return 0;
 }
@@ -65,10 +82,10 @@ int main()
 	// divide the input to 3 classes: I^0, I^+, I^-
 	readInput(buffer,"input.txt");
 
-
+	std::cout << buffer.u_1 << "\t" << buffer.u_2 << std::endl;
 
 	// pruning & search for 2D linear programming
-	std::cout << linearProg_2D_PS( buffer, -HUGE_VAL, HUGE_VAL )  << std::endl;
+	std::cout << linearProg_2D_PS( buffer )  << std::endl;
 	
 
 	return 0;
