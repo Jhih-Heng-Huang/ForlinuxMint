@@ -75,7 +75,15 @@ double linearProg_2D_PS( constraint& buffer )
 	// check whether the range of x-axis is feasible or not
 	if( buffer.u_1 <= buffer.u_2 )
 	{
+		// find the intersection points of lines respectively in I^+ and I^-
 
+		// find the median of x-axis of these intersection points
+
+		// find the points alpha, beta, s_min, s_max, t_min, and t_max
+
+		// check 6 cases
+
+		// remove the unusable lines
 	}
 	else
 	{
