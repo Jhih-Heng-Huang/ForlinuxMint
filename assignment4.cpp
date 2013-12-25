@@ -21,6 +21,14 @@ struct constraint
 	double u_2;
 };
 
+struct  Coordinate
+{
+	double x;
+	double y;
+};
+
+const int num = 5;
+
 // divide the input to 3 classes: I^0, I^+, I^-
 void readInput( constraint& buffer, std::string inputFile )
 {
@@ -76,6 +84,8 @@ double linearProg_2D_PS( constraint& buffer )
 	if( buffer.u_1 <= buffer.u_2 )
 	{
 		// find the intersection points of lines respectively in I^+ and I^-
+		std::vector<Coordinate> point;
+
 
 		// find the median of x-axis of these intersection points
 
@@ -91,6 +101,16 @@ double linearProg_2D_PS( constraint& buffer )
 		return 0;
 	}
 
+}
+
+// only for 2D linear programming problem
+void findInterPoints( const constraint& buffer, std::vector<Coordinate>& point )
+{
+	// find the intersection points between two distinct lines in I^+
+
+	// find the intersection points between two distinct lines in I^-
+
+	
 }
 
 int main()
