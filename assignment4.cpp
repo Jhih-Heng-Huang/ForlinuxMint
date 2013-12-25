@@ -85,7 +85,7 @@ double linearProg_2D_PS( constraint& buffer )
 	{
 		// find the intersection points of lines respectively in I^+ and I^-
 		std::vector<Coordinate> point;
-
+		findInterPoints(buffer,point);
 
 		// find the median of x-axis of these intersection points
 
@@ -106,11 +106,35 @@ double linearProg_2D_PS( constraint& buffer )
 // only for 2D linear programming problem
 void findInterPoints( const constraint& buffer, std::vector<Coordinate>& point )
 {
+	Coordinate newPoint;
+
 	// find the intersection points between two distinct lines in I^+
+	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
+	{
+		if( buffer.ubLines[i-1].coefX/buffer.ubLines[i-1].coefY != buffer.ubLines[i].coefX/buffer.ubLines[i].coefY )
+		{
+			newPoint.x = (buffer.ubLines[i].coefY*buffer.ubLines[i-1].constant - buffer.ubLines[i-1].coefY*buffer.ubLines[i].constant)
+						/(buffer.ubLines[i].coefY*buffer.ubLines[i-1].coefX - buffer.ubLines[i-1].coefY*buffer.ubLines[i].coefX);
+			newPoint.y = 0;
+
+			point.push_back(newPoint);
+		}
+	}
+
 
 	// find the intersection points between two distinct lines in I^-
+	for( size_t i = 1; i < buffer.lbLines.size(); ++i )
+	{
+		if( buffer.lbLines[i-1].coefX/buffer.lbLines[i-1].coefY != buffer.lbLines[i].coefX/buffer.lbLines[i].coefY )
+		{
+			newPoint.x = (buffer.lbLines[i].coefY*buffer.lbLines[i-1].constant - buffer.lbLines[i-1].coefY*buffer.lbLines[i].constant)
+						/(buffer.lbLines[i].coefY*buffer.lbLines[i-1].coefX - buffer.lbLines[i-1].coefY*buffer.lbLines[i].coefX);
+			newPoint.y = 0;
+			
+			point.push_back(newPoint);
+		}
+	}
 
-	
 }
 
 int main()
