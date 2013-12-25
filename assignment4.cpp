@@ -77,15 +77,41 @@ void readInput( constraint& buffer, std::string inputFile )
 	file.close();
 }
 
+// only for 2D linear programming problem
+void findInterPoints( const std::vector<ineq>& buffer, std::vector<Coordinate>& point )
+{
+	Coordinate newPoint;
+
+	
+	for( size_t i = 1; i < buffer.size(); ++i )
+	{
+		if( buffer[i-1].coefX/buffer[i-1].coefY != buffer[i].coefX/buffer[i].coefY )
+		{
+			newPoint.x = (buffer[i].coefY*buffer[i-1].constant - buffer[i-1].coefY*buffer[i].constant)
+						/(buffer[i].coefY*buffer[i-1].coefX - buffer[i-1].coefY*buffer[i].coefX);
+			newPoint.y = 0;
+
+			point.push_back(newPoint);
+		}
+	}
+
+
+}
+
 // pruning & search for 2D linear programming
 double linearProg_2D_PS( constraint& buffer )
 {
 	// check whether the range of x-axis is feasible or not
 	if( buffer.u_1 <= buffer.u_2 )
 	{
-		// find the intersection points of lines respectively in I^+ and I^-
 		std::vector<Coordinate> point;
-		findInterPoints(buffer,point);
+
+		// find the intersection points between two distinct lines in I^+
+		findInterPoints(buffer.ubLines,point);
+
+		// find the intersection points between two distinct lines in I^-
+		findInterPoints(buffer.lbLines,point);		
+
 
 		// find the median of x-axis of these intersection points
 
@@ -103,39 +129,6 @@ double linearProg_2D_PS( constraint& buffer )
 
 }
 
-// only for 2D linear programming problem
-void findInterPoints( const constraint& buffer, std::vector<Coordinate>& point )
-{
-	Coordinate newPoint;
-
-	// find the intersection points between two distinct lines in I^+
-	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
-	{
-		if( buffer.ubLines[i-1].coefX/buffer.ubLines[i-1].coefY != buffer.ubLines[i].coefX/buffer.ubLines[i].coefY )
-		{
-			newPoint.x = (buffer.ubLines[i].coefY*buffer.ubLines[i-1].constant - buffer.ubLines[i-1].coefY*buffer.ubLines[i].constant)
-						/(buffer.ubLines[i].coefY*buffer.ubLines[i-1].coefX - buffer.ubLines[i-1].coefY*buffer.ubLines[i].coefX);
-			newPoint.y = 0;
-
-			point.push_back(newPoint);
-		}
-	}
-
-
-	// find the intersection points between two distinct lines in I^-
-	for( size_t i = 1; i < buffer.lbLines.size(); ++i )
-	{
-		if( buffer.lbLines[i-1].coefX/buffer.lbLines[i-1].coefY != buffer.lbLines[i].coefX/buffer.lbLines[i].coefY )
-		{
-			newPoint.x = (buffer.lbLines[i].coefY*buffer.lbLines[i-1].constant - buffer.lbLines[i-1].coefY*buffer.lbLines[i].constant)
-						/(buffer.lbLines[i].coefY*buffer.lbLines[i-1].coefX - buffer.lbLines[i-1].coefY*buffer.lbLines[i].coefX);
-			newPoint.y = 0;
-			
-			point.push_back(newPoint);
-		}
-	}
-
-}
 
 int main()
 {
