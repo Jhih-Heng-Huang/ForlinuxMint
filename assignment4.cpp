@@ -72,7 +72,16 @@ void readInput( constraint& buffer, std::string inputFile )
 // pruning & search for 2D linear programming
 double linearProg_2D_PS( constraint& buffer )
 {
-	return 0;
+	if( buffer.u_1 <= buffer.u_2 )
+	{
+
+	}
+	else
+	{
+		std::cout << "no feasible solution" << std::endl;
+		return 0;
+	}
+
 }
 
 int main()
