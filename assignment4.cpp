@@ -217,8 +217,38 @@ double linearProg_2D_PS( const constraint buffer )
 
 		// find the points alpha, beta, s_min, s_max, t_min, and t_max
 		Coordinate alpha, beta;
+		double max = -HUGE_VAL, min = HUGE_VAL;
+		double s_max = -HUGE_VAL, s_min = HUGE_VAL;
+		double t_max = -HUGE_VAL, t_min = HUGE_VAL;
+		double tmpY, tmpSlope;
 		alpha.x = medianX;
 		beta.x = medianX;
+
+		// determine the value of y axis of alpha
+		for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+		{
+			tmpY = ((-buffer.lbLines[i].coefX * alpha.x - buffer.lbLines[i].constant)/buffer.lbLines[i].coefY);
+
+			if( max < tmpY )
+			{
+				max = tmpY;
+			}
+		}
+		alpha.y = max;
+
+		// determinate the value of y axis of beta
+		for( size_t i = 0; i < buffer.ubLines.size(); ++i )
+		{
+			tmpY = ((-buffer.ubLines[i].coefX * beta.x - buffer.ubLines[i].constant)/buffer.ubLines[i].coefY);
+
+			if( min < tmpY )
+			{
+				min = tmpY;
+			}
+		}
+		beta.y = min;
+
+		
 
 		// check 6 cases
 
