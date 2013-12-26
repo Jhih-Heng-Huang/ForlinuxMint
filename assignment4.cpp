@@ -202,7 +202,7 @@ double findKthOnX( const std::vector<Coordinate>& point, const int kth, const in
 }
 
 // pruning & search for 2D linear programming
-double linearProg_2D_PS( const constraint& buffer )
+double linearProg_2D_PS( const constraint buffer )
 {
 	// check whether the range of x-axis is feasible or not
 	if( buffer.u_1 <= buffer.u_2 )
