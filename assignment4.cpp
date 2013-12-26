@@ -201,6 +201,32 @@ double findKthOnX( const std::vector<Coordinate>& point, const int kth, const in
 
 }
 
+void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, double& maxSlope, double& minSlope )
+{
+	double tmpY, tmpSlope;
+
+	for( size_t i = 0; i < buffer.size(); ++i )
+	{
+		tmpY = (-buffer[i].coefX * point.x - buffer[i].constant) / buffer[i].coefY;
+
+		if( tmpY == point.y )
+		{
+			tmpSlope = -(buffer[i].coefX / buffer[i].coefY);
+
+			if( maxSlope < tmpSlope )
+			{
+				maxSlope = tmpSlope;
+			}
+
+			if( minSlope > tmpSlope )
+			{
+				minSlope = tmpSlope;
+			}
+
+		}
+	}
+}
+
 // pruning & search for 2D linear programming
 double linearProg_2D_PS( const constraint buffer )
 {
@@ -224,7 +250,7 @@ double linearProg_2D_PS( const constraint buffer )
 		alpha.x = medianX;
 		beta.x = medianX;
 
-		// determine the value of y axis of alpha
+		// determine the value of y axis of alpha , s_max and s_min
 		for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 		{
 			tmpY = ((-buffer.lbLines[i].coefX * alpha.x - buffer.lbLines[i].constant)/buffer.lbLines[i].coefY);
@@ -236,19 +262,21 @@ double linearProg_2D_PS( const constraint buffer )
 		}
 		alpha.y = max;
 
+		determineSlope( buffer.lbLines, alpha, s_max, s_min );
+
 		// determinate the value of y axis of beta
 		for( size_t i = 0; i < buffer.ubLines.size(); ++i )
 		{
 			tmpY = ((-buffer.ubLines[i].coefX * beta.x - buffer.ubLines[i].constant)/buffer.ubLines[i].coefY);
 
-			if( min < tmpY )
+			if( min > tmpY )
 			{
 				min = tmpY;
 			}
 		}
 		beta.y = min;
 
-		
+		determineSlope( buffer.ubLines, beta, t_max, t_min );
 
 		// check 6 cases
 
