@@ -209,17 +209,16 @@ double linearProg_2D_PS( constraint& buffer )
 	{
 		std::vector<Coordinate> point;
 
-		// find the intersections between two distinct lines in I^+
 		findIntersections(buffer.ubLines,point);
 
-		// find the intersections between two distinct lines in I^-
 		findIntersections(buffer.lbLines,point);
 
-		// find the median of x-axis of these intersections
-		findKthOnX( point, (point.size()+1)/2, 0, point.size() );
-
+		double medianX = findKthOnX( point, (point.size()+1)/2, 0, point.size() );
 
 		// find the points alpha, beta, s_min, s_max, t_min, and t_max
+		Coordinate alpha, beta;
+		alpha.x = medianX;
+		beta.x = medianX;
 
 		// check 6 cases
 
