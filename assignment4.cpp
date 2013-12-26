@@ -78,7 +78,7 @@ void readInput( constraint& buffer, std::string inputFile )
 }
 
 // only for 2D linear programming problem
-void findInterPoints( const std::vector<ineq>& buffer, std::vector<Coordinate>& point )
+void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>& point )
 {
 	Coordinate newPoint;
 
@@ -106,14 +106,14 @@ double linearProg_2D_PS( constraint& buffer )
 	{
 		std::vector<Coordinate> point;
 
-		// find the intersection points between two distinct lines in I^+
-		findInterPoints(buffer.ubLines,point);
+		// find the intersections between two distinct lines in I^+
+		findIntersections(buffer.ubLines,point);
 
-		// find the intersection points between two distinct lines in I^-
-		findInterPoints(buffer.lbLines,point);		
+		// find the intersections between two distinct lines in I^-
+		findIntersections(buffer.lbLines,point);
 
+		// find the median of x-axis of these intersections
 
-		// find the median of x-axis of these intersection points
 
 		// find the points alpha, beta, s_min, s_max, t_min, and t_max
 
