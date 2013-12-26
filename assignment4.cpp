@@ -98,6 +98,109 @@ void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>
 
 }
 
+void swap( Coordinate& one, Coordinate& theOther )
+{
+	Coordinate tmp;
+
+	tmp = one;
+	one = theOther;
+	theOther = tmp;
+}
+
+void groupBubbleSortOnX( std::vector<Coordinate>& buffer, const int front, const int rear )
+{
+	size_t size = rear - front;
+
+	for( size_t count = 0; count < size; ++count )
+	{
+		for( size_t index = front+1; index < (rear - count); ++index )
+		{
+			if( buffer[index-1].x > buffer[index].x )
+			{
+				swap(buffer[index-1], buffer[index]);
+			}
+		}
+	}
+
+}
+
+double findKthOnX( const std::vector<Coordinate>& point, const int kth, const int front, const int rear )
+{
+	std::vector<Coordinate> buffer;
+	for( int i = front; i < rear; ++i )
+	{
+		buffer.push_back(point[i]);
+	}
+
+	if( buffer.size() <= num )
+	{
+		groupBubbleSortOnX(buffer,0,buffer.size());
+
+		return buffer[kth-1].x;
+	}
+	else
+	{
+		// sort each group (O(n/5))
+		size_t numGroup = (buffer.size() + num - 1)/num;
+
+
+		for( size_t group = 0; group < numGroup; ++group )
+		{
+			if( (group + 1)*num <= buffer.size() )
+			{
+				groupBubbleSortOnX( buffer, group*num, (group + 1)*num );
+			}
+			else
+			{
+				groupBubbleSortOnX( buffer, group*num, buffer.size() );
+			}
+		}
+
+		// find the median of each group and put into a new vector v (O(n/5))
+		std::vector<Coordinate> v;
+		for( size_t group = 0; group <= numGroup; ++group )
+		{
+			if( group*num + (num + 1)/2 < buffer.size() )
+			{
+				v.push_back(buffer[ group*num + (num + 1)/2 - 1 ]);
+			}
+		}
+
+		double result = findKthOnX( v, (v.size() + 1)/2, 0, v.size() );
+		v.clear();
+
+		// to show that how big the median of the vector v in the buffer is and delete points which is smaller than it. (O(n))
+		size_t count = 0;
+		for( size_t index = 0; index < buffer.size(); ++index )
+		{
+			if( buffer[index].x <= result )
+			{
+				v.push_back(buffer[index]);
+				buffer.erase(buffer.begin()+index);
+				++count;
+				--index;
+			}
+		}
+
+		// which side of vector would you like to search? (T(3n/4))
+		if( count > kth )
+		{
+			return findKthOnX( v, kth, 0, v.size() );
+		}
+		else if( count < kth )
+		{
+			return findKthOnX( buffer, kth - count, 0, buffer.size() );
+		}
+		else
+		{
+			return result;
+		}
+
+	}
+
+
+}
+
 // pruning & search for 2D linear programming
 double linearProg_2D_PS( constraint& buffer )
 {
@@ -113,6 +216,7 @@ double linearProg_2D_PS( constraint& buffer )
 		findIntersections(buffer.lbLines,point);
 
 		// find the median of x-axis of these intersections
+		findKthOnX( point, (point.size()+1)/2, 0, point.size() );
 
 
 		// find the points alpha, beta, s_min, s_max, t_min, and t_max
