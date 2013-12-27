@@ -103,11 +103,10 @@ void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>
 	
 	for( size_t i = 1; i < buffer.size(); ++i )
 	{
-		if( buffer[i-1].coefX/buffer[i-1].coefY != buffer[i].coefX/buffer[i].coefY )
+		// there is a intersection between two distinct lines
+		if( getSlope(buffer[i-1]) != getSlope(buffer[i]) )
 		{
-			newPoint.x = (buffer[i].coefY*buffer[i-1].constant - buffer[i-1].coefY*buffer[i].constant)
-						/(buffer[i].coefY*buffer[i-1].coefX - buffer[i-1].coefY*buffer[i].coefX);
-			newPoint.y = 0;
+			newPoint = getIntersection(buffer[i-1], buffer[i]);
 
 			point.push_back(newPoint);
 		}
@@ -229,7 +228,7 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 		if( tmpY == point.y )
 		{
-			tmpSlope = -(buffer[i].coefX / buffer[i].coefY);
+			tmpSlope = getSlope(buffer[i]);
 
 			if( maxSlope < tmpSlope )
 			{
