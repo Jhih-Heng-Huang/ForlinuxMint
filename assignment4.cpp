@@ -228,7 +228,7 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 }
 
 // pruning & search for 2D linear programming
-double linearProg_2D_PS( const constraint buffer )
+double linearProg_2D_PS( constraint buffer )
 {
 	// check whether the range of x-axis is feasible or not
 	if( buffer.u_1 <= buffer.u_2 )
@@ -279,6 +279,37 @@ double linearProg_2D_PS( const constraint buffer )
 		determineSlope( buffer.ubLines, beta, t_max, t_min );
 
 		// check 6 cases
+		if( alpha.y <= beta.y )
+		{
+			if( s_max < 0 )
+			{
+
+			}
+			else if( s_min > 0 )
+			{
+
+			}
+			else
+			{
+				
+			}
+		}
+		else
+		{
+			if( s_max < t_min )
+			{
+
+			}
+			else if( s_min > t_max )
+			{
+
+			}
+			else
+			{
+				std::cout << "no feasible solution" << std::endl;
+				return 0;
+			}
+		}
 
 		// remove the unusable lines
 	}
