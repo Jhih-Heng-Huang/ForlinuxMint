@@ -86,9 +86,14 @@ Coordinate getIntersection( const ineq& one, const ineq& theOther )
 
 	point.y = (one.constant * theOther.coefX - theOther.constant * one.coefX)/
 				(one.coefY * theOther.coefX - theOther.constant * one.coefX);
+
+	return point;
 }
 
-
+double getSlope( const ineq& line )
+{
+	return -(line.coefX / line.coefY);
+}
 
 // only for 2D linear programming problem
 void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>& point )
