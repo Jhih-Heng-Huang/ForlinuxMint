@@ -77,6 +77,17 @@ void readInput( constraint& buffer, std::string inputFile )
 	file.close();
 }
 
+Coordinate getIntersection( const ineq& one, const ineq& theOther )
+{
+	Coordinate point;
+
+	point.x = (one.constant * theOther.coefY - theOther.constant * one.coefY)/
+				(one.coefX * theOther.coefY - theOther.coefX * one.coefY);
+
+	point.y = (one.constant * theOther.coefX - theOther.constant * one.coefX)/
+				(one.coefY * theOther.coefX - theOther.constant * one.coefX);
+}
+
 
 
 // only for 2D linear programming problem
@@ -231,31 +242,7 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 void pruningLeft( constraint& buffer, const double& medianX )
 {
-	double tmpX;
 
-	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
-	{
-		// there is a intersection between distinct two lines
-		if( buffer.ubLines[i-1].coefX / buffer.ubLines[i-1].coefY != buffer.ubLines[i].coefX / buffer.ubLines[i].coefY )
-		{
-			//find the x value of the intersection between distinct two lines
-			tmpX = ( buffer.ubLines[i-1].constant * buffer.ubLines[i].coefY - buffer.ubLines[i-1].coefY * buffer.ubLines[i].constant )/
-					( buffer.ubLines[i-1].coefX * buffer.ubLines[i].coefY - buffer.ubLines[i-1].coefY * buffer.ubLines[i].coefX );
-
-			if( tmpX < medianX )
-			{
-				if( -(buffer.ubLines[i-1].coefX / buffer.ubLines[i-1].coefY) > -(buffer.ubLines[i].coefX / buffer.ubLines[i].coefY) )
-				{
-
-				}
-				else
-				{
-
-				}
-			}
-		}
-
-	}
 }
 
 void pruningRight( constraint& buffer, const double& medianX )
