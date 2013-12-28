@@ -279,67 +279,93 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 void pruningLeft( constraint& buffer, const double& medianX )
 {
+	Coordinate tmpPoint;
+
 	// pruning the redundant lines in I^+
 	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
 	{
-		if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+		tmpPoint = getIntersection( buffer.ubLines[i-1], buffer.ubLines[i] );
+
+		if( tmpPoint.x < medianX )
 		{
-			// pruning i-1
-			buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
-		}
-		else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
-		{
-			// pruning i
-			buffer.ubLines.erase(buffer.ubLines.begin() + i);
+			if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+			{
+				// pruning i-1
+				buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
+			}
+			else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+			{
+				// pruning i
+				buffer.ubLines.erase(buffer.ubLines.begin() + i);
+			}
 		}
 	}
 
 	// pruning the redundant lines in I^-
 	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 	{
-		if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
+
+		if( tmpPoint.x < medianX )
 		{
-			// pruning i-1
-			buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
-		}
-		else if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
-		{
-			// pruning i
-			buffer.lbLines.erase(buffer.lbLines.begin() + i);
+			if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+			{
+				// pruning i-1
+				buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
+			}
+			else if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+			{
+				// pruning i
+				buffer.lbLines.erase(buffer.lbLines.begin() + i);
+			}
 		}
 	}
 }
 
 void pruningRight( constraint& buffer, const double& medianX )
 {
+	Coordinate tmpPoint;
+
 	// pruning the redundant lines in I^+
 	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
 	{
-		if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+		tmpPoint = getIntersection( buffer.ubLines[i-1], buffer.ubLines[i] );
+
+		if( medianX < tmpPoint.x )
 		{
-			// pruning i-1
-			buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
+			if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+			{
+				// pruning i-1
+				buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
+			}
+			else if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+			{
+				// pruning i
+				buffer.ubLines.erase(buffer.ubLines.begin() + i);
+			}
 		}
-		else if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
-		{
-			// pruning i
-			buffer.ubLines.erase(buffer.ubLines.begin() + i);
-		}
+		
 	}
 
 	// pruning the redundant lines in I^-
 	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 	{
-		if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
+
+		if( medianX < tmpPoint.x )
 		{
-			// pruning i-1
-			buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
+			if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+			{
+				// pruning i-1
+				buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
+			}
+			else if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+			{
+				// pruning i
+				buffer.lbLines.erase(buffer.lbLines.begin() + i);
+			}
 		}
-		else if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
-		{
-			// pruning i
-			buffer.lbLines.erase(buffer.lbLines.begin() + i);
-		}
+		
 	}
 
 }
@@ -400,26 +426,26 @@ double linearProg_2D_PS( constraint buffer )
 		{
 			if( s_max < 0 )
 			{
-
+				pruningLeft(buffer,medianX);
 			}
 			else if( s_min > 0 )
 			{
-
+				pruningRight(buffer,medianX);
 			}
 			else
 			{
-
+				// solution x = medianX
 			}
 		}
 		else
 		{
 			if( s_max < t_min )
 			{
-
+				pruningLeft(buffer,medianX);
 			}
 			else if( s_min > t_max )
 			{
-
+				pruningRight(buffer,medianX);
 			}
 			else
 			{
@@ -428,7 +454,7 @@ double linearProg_2D_PS( constraint buffer )
 			}
 		}
 
-		// remove the unusable lines
+		return linearProg_2D_PS(buffer);
 	}
 	else
 	{
