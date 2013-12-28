@@ -312,6 +312,35 @@ void pruningLeft( constraint& buffer, const double& medianX )
 
 void pruningRight( constraint& buffer, const double& medianX )
 {
+	// pruning the redundant lines in I^+
+	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
+	{
+		if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+		{
+			// pruning i-1
+			buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
+		}
+		else if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+		{
+			// pruning i
+			buffer.ubLines.erase(buffer.ubLines.begin() + i);
+		}
+	}
+
+	// pruning the redundant lines in I^-
+	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+	{
+		if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+		{
+			// pruning i-1
+			buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
+		}
+		else if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+		{
+			// pruning i
+			buffer.lbLines.erase(buffer.lbLines.begin() + i);
+		}
+	}
 
 }
 
