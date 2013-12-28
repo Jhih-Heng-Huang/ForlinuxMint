@@ -95,13 +95,18 @@ double getSlope( const ineq& line )
 	return -(line.coefX / line.coefY);
 }
 
+void remove( std::vector<ineq>& buffer, size_t which )
+{
+	
+}
+
 // only for 2D linear programming problem
 void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>& point )
 {
 	Coordinate newPoint;
 
 	
-	for( size_t i = 1; i < buffer.size(); ++i )
+	for( size_t i = 1; i < buffer.size(); )
 	{
 		// there is a intersection between two distinct lines
 		if( getSlope(buffer[i-1]) != getSlope(buffer[i]) )
@@ -109,6 +114,12 @@ void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>
 			newPoint = getIntersection(buffer[i-1], buffer[i]);
 
 			point.push_back(newPoint);
+
+			i = i + 2;
+		}
+		else
+		{
+			++i;
 		}
 	}
 
@@ -246,7 +257,25 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 void pruningLeft( constraint& buffer, const double& medianX )
 {
+	for( size_t i = 1; i < buffer.ubLines.size(); )
+	{
+		if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer).ubLines[i] )
+		{
+			// pruning i-1
+		}
+		else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer).ubLines[i] )
+		{
+			// pruning i
+		}
+		else
+		{
+		}
+	}
 
+	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+	{
+
+	}
 }
 
 void pruningRight( constraint& buffer, const double& medianX )
