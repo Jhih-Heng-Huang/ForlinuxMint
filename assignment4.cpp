@@ -95,13 +95,8 @@ double getSlope( const ineq& line )
 	return -(line.coefX / line.coefY);
 }
 
-void remove( std::vector<ineq>& buffer, size_t which )
-{
-	
-}
-
 // only for 2D linear programming problem
-void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>& point )
+void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& point )
 {
 	Coordinate newPoint;
 
@@ -119,7 +114,34 @@ void findIntersections( const std::vector<ineq>& buffer, std::vector<Coordinate>
 		}
 		else
 		{
-			++i;
+			if( buffer[i].coefY > 0 )
+			{
+				// I^+
+				if( (buffer[i-1].constant / buffer[i-1].coefY) < (buffer[i-1].constant / buffer[i-1].coefY) )
+				{
+					// line_{i - 1} belong to line_{i}
+					buffer.erase( buffer.begin() + i );
+				}
+				else
+				{
+					// line_{i} belong to line_{i - 1}
+					buffer.erase( buffer.begin() + i - 1 );	
+				}
+			}
+			else
+			{
+				// I^-
+				if( (buffer[i-1].constant / buffer[i-1].coefY) > (buffer[i-1].constant / buffer[i-1].coefY) )
+				{
+					// line_{i - 1} belong to line_{i}
+					buffer.erase( buffer.begin() + i );
+				}
+				else
+				{
+					// line_{i} belong to line_{i - 1}
+					buffer.erase( buffer.begin() + i - 1 );	
+				}
+			}
 		}
 	}
 
@@ -257,24 +279,34 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 void pruningLeft( constraint& buffer, const double& medianX )
 {
-	for( size_t i = 1; i < buffer.ubLines.size(); )
+	// pruning the redundant lines in I^+
+	for( size_t i = 1; i < buffer.ubLines.size(); ++i )
 	{
-		if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer).ubLines[i] )
+		if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
 		{
 			// pruning i-1
+			buffer.erase(buffer.begin() + (i-1));
 		}
-		else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer).ubLines[i] )
+		else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
 		{
 			// pruning i
-		}
-		else
-		{
+			buffer.erase(buffer.begin() + i);
 		}
 	}
 
+	// pruning the redundant lines in I^-
 	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 	{
-
+		if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+		{
+			// pruning i-1
+			buffer.erase(buffer.begin() + (i-1));
+		}
+		else if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+		{
+			// pruning i
+			buffer.erase(buffer.begin() + i);
+		}
 	}
 }
 
