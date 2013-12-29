@@ -257,7 +257,9 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 	for( size_t i = 0; i < buffer.size(); ++i )
 	{
-		tmpY = (-buffer[i].coefX * point.x - buffer[i].constant) / buffer[i].coefY;
+		tmpY = (buffer[i].constant - buffer[i].coefX * point.x) / buffer[i].coefY;
+
+		// std::cout << point.y << "\t" << tmpY << "\n";
 
 		if( tmpY == point.y )
 		{
@@ -370,9 +372,43 @@ void pruningRight( constraint& buffer, const double& medianX )
 
 }
 
+bool isFeasible( const ineq& upperBound, const ineq& lowerBound )
+{
+	if( getSlope(upperBound) != getSlope(lowerBound) )
+	{
+		return true;
+	}
+	else
+	{
+		if( (upperBound.constant / upperBound.coefY) > (lowerBound.constant / lowerBound.coefY) )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
 // pruning & search for 2D linear programming
 double linearProg_2D_PS( constraint buffer )
 {
+	for( size_t i = 0; i < buffer.ubLines.size(); ++i )
+	{
+		std::cout << buffer.ubLines[i].coefX << "\t"
+					<< buffer.ubLines[i].coefY << "\t"
+					<< buffer.ubLines[i].constant << std::endl;
+	}
+	std::cout << "-------------------------" << std::endl;
+	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+	{
+		std::cout << buffer.lbLines[i].coefX << "\t"
+					<< buffer.lbLines[i].coefY << "\t"
+					<< buffer.lbLines[i].constant << std::endl;
+	}	
+	std::cout << std::endl;
+
 	// check whether the range of x-axis is feasible or not
 	if( buffer.u_1 <= buffer.u_2 )
 	{
@@ -403,7 +439,52 @@ double linearProg_2D_PS( constraint buffer )
 			}
 			else
 			{
-				
+				if( isFeasible( buffer.ubLines[0], buffer.lbLines[0] ) )
+				{
+					if( getSlope(buffer.ubLines[0]) == getSlope(buffer.lbLines[0]) )
+					{
+						if( getSlope(buffer.ubLines[0]) == 0 )
+						{
+							return (buffer.ubLines[0].constant/ buffer.ubLines[0].coefY);
+						}
+						else
+						{
+							return -HUGE_VAL;
+						}
+					}
+					else
+					{
+						if( getSlope(buffer.ubLines[0]) < getSlope(buffer.lbLines[0]) )
+						{
+							if( getSlope(buffer.lbLines[0]) > 0 )
+							{
+								return -HUGE_VAL;
+							}
+							else
+							{
+								Coordinate interPoint = getIntersection(buffer.ubLines[0], buffer.lbLines[0]);
+								return interPoint.y;
+							}
+						}
+						else
+						{
+							if( getSlope(buffer.lbLines[0]) < 0 )
+							{
+								return -HUGE_VAL;
+							}
+							else
+							{
+								Coordinate interPoint = getIntersection(buffer.ubLines[0], buffer.lbLines[0]);
+								return interPoint.y;
+							}
+						}
+					}
+				}
+				else
+				{
+					std::cout << "no feasible solution" << std::endl;
+					return 0;
+				}
 			}
 		}
 		else
@@ -424,7 +505,7 @@ double linearProg_2D_PS( constraint buffer )
 			// determine the value of y axis of alpha , s_max and s_min
 			for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 			{
-				tmpY = ((-buffer.lbLines[i].coefX * alpha.x - buffer.lbLines[i].constant)/buffer.lbLines[i].coefY);
+				tmpY = (buffer.lbLines[i].constant - buffer.lbLines[i].coefX * alpha.x) / buffer.lbLines[i].coefY;
 
 				if( max < tmpY )
 				{
@@ -433,12 +514,13 @@ double linearProg_2D_PS( constraint buffer )
 			}
 			alpha.y = max;
 
+			std::cout << alpha.x << "\t" << alpha.y << "\n";
 			determineSlope( buffer.lbLines, alpha, s_max, s_min );
 
 			// determinate the value of y axis of beta
 			for( size_t i = 0; i < buffer.ubLines.size(); ++i )
 			{
-				tmpY = ((-buffer.ubLines[i].coefX * beta.x - buffer.ubLines[i].constant)/buffer.ubLines[i].coefY);
+				tmpY = ((buffer.ubLines[i].constant - buffer.ubLines[i].coefX * beta.x)/buffer.ubLines[i].coefY);
 
 				if( min > tmpY )
 				{
@@ -447,7 +529,13 @@ double linearProg_2D_PS( constraint buffer )
 			}
 			beta.y = min;
 
+			std::cout << beta.x << "\t" << beta.y << "\n";
 			determineSlope( buffer.ubLines, beta, t_max, t_min );
+
+			std::cout << "s_max = " << s_max << std::endl; 
+			std::cout << "s_min = " << s_min << std::endl;
+			std::cout << "t_max = " << t_max << std::endl;
+			std::cout << "t_min = " << t_min << std::endl;
 
 			// check 6 cases
 			if( alpha.y <= beta.y )
@@ -506,7 +594,9 @@ int main()
 	std::cout << buffer.u_1 << "\t" << buffer.u_2 << std::endl;
 
 	// pruning & search for 2D linear programming
-	std::cout << linearProg_2D_PS( buffer )  << std::endl;
+	std::cout << "end  solution:" << linearProg_2D_PS( buffer ) << "\n";
+
+	
 	
 
 	return 0;
