@@ -286,7 +286,7 @@ void pruningLeft( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.ubLines[i-1], buffer.ubLines[i] );
 
-		if( tmpPoint.x < medianX )
+		if( tmpPoint.x <= medianX )
 		{
 			if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
 			{
@@ -306,7 +306,7 @@ void pruningLeft( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
 
-		if( tmpPoint.x < medianX )
+		if( tmpPoint.x <= medianX )
 		{
 			if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
 			{
@@ -331,7 +331,7 @@ void pruningRight( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.ubLines[i-1], buffer.ubLines[i] );
 
-		if( medianX < tmpPoint.x )
+		if( medianX <= tmpPoint.x )
 		{
 			if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
 			{
@@ -352,7 +352,7 @@ void pruningRight( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
 
-		if( medianX < tmpPoint.x )
+		if( medianX <= tmpPoint.x )
 		{
 			if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
 			{
@@ -382,79 +382,110 @@ double linearProg_2D_PS( constraint buffer )
 
 		findIntersections(buffer.lbLines,point);
 
-		double medianX = findKthOnX( point, (point.size()+1)/2, 0, point.size() );
+		// 
 
-		// find the points alpha, beta, s_min, s_max, t_min, and t_max
-		Coordinate alpha, beta;
-		double max = -HUGE_VAL, min = HUGE_VAL;
-		double s_max = -HUGE_VAL, s_min = HUGE_VAL;
-		double t_max = -HUGE_VAL, t_min = HUGE_VAL;
-		double tmpY, tmpSlope;
-		alpha.x = medianX;
-		beta.x = medianX;
-
-		// determine the value of y axis of alpha , s_max and s_min
-		for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+		if( point.size() == 0 )
 		{
-			tmpY = ((-buffer.lbLines[i].coefX * alpha.x - buffer.lbLines[i].constant)/buffer.lbLines[i].coefY);
-
-			if( max < tmpY )
+			if( buffer.ubLines.size() == 1 && buffer.lbLines.size() == 0 )
 			{
-				max = tmpY;
+				return -HUGE_VAL;
 			}
-		}
-		alpha.y = max;
-
-		determineSlope( buffer.lbLines, alpha, s_max, s_min );
-
-		// determinate the value of y axis of beta
-		for( size_t i = 0; i < buffer.ubLines.size(); ++i )
-		{
-			tmpY = ((-buffer.ubLines[i].coefX * beta.x - buffer.ubLines[i].constant)/buffer.ubLines[i].coefY);
-
-			if( min > tmpY )
+			else if( buffer.ubLines.size() == 0 && buffer.lbLines.size() == 1 )
 			{
-				min = tmpY;
-			}
-		}
-		beta.y = min;
-
-		determineSlope( buffer.ubLines, beta, t_max, t_min );
-
-		// check 6 cases
-		if( alpha.y <= beta.y )
-		{
-			if( s_max < 0 )
-			{
-				pruningLeft(buffer,medianX);
-			}
-			else if( s_min > 0 )
-			{
-				pruningRight(buffer,medianX);
+				if( getSlope( buffer.lbLines[0] ) == 0 )
+				{
+					return (buffer.lbLines[0].constant / buffer.lbLines[0].coefY);
+				}
+				else
+				{
+					return -HUGE_VAL;
+				}
 			}
 			else
 			{
-				// solution x = medianX
+				
 			}
 		}
 		else
 		{
-			if( s_max < t_min )
+			double medianX = findKthOnX( point, (point.size()+1)/2, 0, point.size() );
+
+			std::cout << medianX << "\n";
+
+			// find the points alpha, beta, s_min, s_max, t_min, and t_max
+			Coordinate alpha, beta;
+			double max = -HUGE_VAL, min = HUGE_VAL;
+			double s_max = -HUGE_VAL, s_min = HUGE_VAL;
+			double t_max = -HUGE_VAL, t_min = HUGE_VAL;
+			double tmpY, tmpSlope;
+			alpha.x = medianX;
+			beta.x = medianX;
+
+			// determine the value of y axis of alpha , s_max and s_min
+			for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 			{
-				pruningLeft(buffer,medianX);
+				tmpY = ((-buffer.lbLines[i].coefX * alpha.x - buffer.lbLines[i].constant)/buffer.lbLines[i].coefY);
+
+				if( max < tmpY )
+				{
+					max = tmpY;
+				}
 			}
-			else if( s_min > t_max )
+			alpha.y = max;
+
+			determineSlope( buffer.lbLines, alpha, s_max, s_min );
+
+			// determinate the value of y axis of beta
+			for( size_t i = 0; i < buffer.ubLines.size(); ++i )
 			{
-				pruningRight(buffer,medianX);
+				tmpY = ((-buffer.ubLines[i].coefX * beta.x - buffer.ubLines[i].constant)/buffer.ubLines[i].coefY);
+
+				if( min > tmpY )
+				{
+					min = tmpY;
+				}
+			}
+			beta.y = min;
+
+			determineSlope( buffer.ubLines, beta, t_max, t_min );
+
+			// check 6 cases
+			if( alpha.y <= beta.y )
+			{
+				if( s_max < 0 )
+				{
+					pruningLeft(buffer,medianX);
+				}
+				else if( s_min > 0 )
+				{
+					pruningRight(buffer,medianX);
+				}
+				else
+				{
+					// solution x = medianX
+					return alpha.y;
+				}
 			}
 			else
 			{
-				std::cout << "no feasible solution" << std::endl;
-				return 0;
+				if( s_max < t_min )
+				{
+					pruningLeft(buffer,medianX);
+				}
+				else if( s_min > t_max )
+				{
+					pruningRight(buffer,medianX);
+				}
+				else
+				{
+					std::cout << "no feasible solution" << std::endl;
+					return 0;
+				}
 			}
-		}
 
-		return linearProg_2D_PS(buffer);
+			return linearProg_2D_PS(buffer);
+		}
+		
 	}
 	else
 	{
