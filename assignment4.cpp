@@ -304,7 +304,7 @@ void pruningLeft( constraint& buffer, const double& medianX )
 	}
 
 	// pruning the redundant lines in I^-
-	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+	for( size_t i = 1; i < buffer.lbLines.size(); ++i )
 	{
 		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
 
@@ -350,7 +350,7 @@ void pruningRight( constraint& buffer, const double& medianX )
 	}
 
 	// pruning the redundant lines in I^-
-	for( size_t i = 0; i < buffer.lbLines.size(); ++i )
+	for( size_t i = 1; i < buffer.lbLines.size(); ++i )
 	{
 		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
 
@@ -490,8 +490,6 @@ double linearProg_2D_PS( constraint buffer )
 		else
 		{
 			double medianX = findKthOnX( point, (point.size()+1)/2, 0, point.size() );
-
-			std::cout << medianX << "\n";
 
 			// find the points alpha, beta, s_min, s_max, t_min, and t_max
 			Coordinate alpha, beta;
