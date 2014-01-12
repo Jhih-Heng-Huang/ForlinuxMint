@@ -540,11 +540,14 @@ double linearProg_2D_PS( constraint buffer )
 			// determine the value of y axis of alpha , s_max and s_min
 			for( size_t i = 0; i < buffer.lbLines.size(); ++i )
 			{
-				tmpY = (buffer.lbLines[i].constant - buffer.lbLines[i].coefX * alpha.x) / buffer.lbLines[i].coefY;
-
-				if( max < tmpY )
+				if( buffer.lbLines[i].coefY != 0 )
 				{
-					max = tmpY;
+					tmpY = (buffer.lbLines[i].constant - buffer.lbLines[i].coefX * alpha.x) / buffer.lbLines[i].coefY;
+
+					if( max < tmpY )
+					{
+						max = tmpY;
+					}
 				}
 			}
 			alpha.y = max;
@@ -555,11 +558,14 @@ double linearProg_2D_PS( constraint buffer )
 			// determinate the value of y axis of beta
 			for( size_t i = 0; i < buffer.ubLines.size(); ++i )
 			{
-				tmpY = ((buffer.ubLines[i].constant - buffer.ubLines[i].coefX * beta.x)/buffer.ubLines[i].coefY);
-
-				if( min > tmpY )
+				if( buffer.ubLines[i].coefY != 0 )
 				{
-					min = tmpY;
+					tmpY = ((buffer.ubLines[i].constant - buffer.ubLines[i].coefX * beta.x)/buffer.ubLines[i].coefY);
+
+					if( min > tmpY )
+					{
+						min = tmpY;
+					}
 				}
 			}
 			beta.y = min;
@@ -578,10 +584,12 @@ double linearProg_2D_PS( constraint buffer )
 				if( s_max < 0 )
 				{
 					pruningLeft(buffer,medianX);
+					buffer.u_1 = medianX;
 				}
 				else if( s_min > 0 )
 				{
 					pruningRight(buffer,medianX);
+					buffer.u_2 = medianX;
 				}
 				else
 				{
@@ -594,10 +602,12 @@ double linearProg_2D_PS( constraint buffer )
 				if( s_max < t_min )
 				{
 					pruningLeft(buffer,medianX);
+					buffer.u_1 = medianX;
 				}
 				else if( s_min > t_max )
 				{
 					pruningRight(buffer,medianX);
+					buffer.u_2 = medianX;
 				}
 				else
 				{
