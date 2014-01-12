@@ -63,6 +63,8 @@ void readInput( constraint& buffer, std::string inputFile )
 					buffer.u_1 = area.constant/area.coefX;
 				}
 			}
+
+			buffer.lbLines.push_back(area);
 		}
 		else if( area.coefY > 0 )
 		{
@@ -96,7 +98,7 @@ double getSlope( const ineq& line )
 }
 
 // only for 2D linear programming problem
-void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& point )
+void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& point, double u_1, double u_2 )
 {
 	Coordinate newPoint;
 
@@ -108,7 +110,10 @@ void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& poin
 		{
 			newPoint = getIntersection(buffer[i-1], buffer[i]);
 
-			point.push_back(newPoint);
+			if(  u_1 <= newPoint.x && newPoint.x <= u_2 )
+			{
+				point.push_back(newPoint);
+			}
 
 			i = i + 2;
 		}
@@ -117,7 +122,21 @@ void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& poin
 			if( buffer[i].coefY > 0 )
 			{
 				// I^+
-				if( (buffer[i-1].constant / buffer[i-1].coefY) < (buffer[i-1].constant / buffer[i-1].coefY) )
+				if( (buffer[i-1].constant / buffer[i-1].coefY) < (buffer[i].constant / buffer[i].coefY) )
+				{
+					// line_{i - 1} belong to line_{i}
+					buffer.erase( buffer.begin() + i );
+				}
+				else
+				{
+					// line_{i} belong to line_{i - 1}
+					buffer.erase( buffer.begin() + i - 1 );	
+				}
+			}
+			else if( buffer[i].coefY < 0 )
+			{
+				// I^-
+				if( (buffer[i-1].constant / buffer[i-1].coefY) > (buffer[i].constant / buffer[i].coefY) )
 				{
 					// line_{i - 1} belong to line_{i}
 					buffer.erase( buffer.begin() + i );
@@ -130,16 +149,35 @@ void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& poin
 			}
 			else
 			{
-				// I^-
-				if( (buffer[i-1].constant / buffer[i-1].coefY) > (buffer[i-1].constant / buffer[i-1].coefY) )
+				if( buffer[i-1].coefX * buffer[i].coefX > 0 )
 				{
-					// line_{i - 1} belong to line_{i}
-					buffer.erase( buffer.begin() + i );
+					if( buffer[i].coefX > 0 )
+					{
+						if( buffer[i-1].constant / buffer[i-1].coefX < buffer[i].constant / buffer[i].coefX )
+						{
+							buffer.erase( buffer.begin() + i );
+						}
+						else
+						{
+							buffer.erase( buffer.begin() + i - 1 );	
+						}
+					}
+					else
+					{
+						if( buffer[i-1].constant / buffer[i-1].coefX > buffer[i].constant / buffer[i].coefX )
+						{
+							buffer.erase( buffer.begin() + i );
+						}
+						else
+						{
+							buffer.erase( buffer.begin() + i - 1 );	
+						}
+
+					}
 				}
 				else
 				{
-					// line_{i} belong to line_{i - 1}
-					buffer.erase( buffer.begin() + i - 1 );	
+					++i;
 				}
 			}
 		}
@@ -414,11 +452,10 @@ double linearProg_2D_PS( constraint buffer )
 	{
 		std::vector<Coordinate> point;
 
-		findIntersections(buffer.ubLines,point);
+		findIntersections(buffer.ubLines,point,buffer.u_1,buffer.u_2);
 
-		findIntersections(buffer.lbLines,point);
+		findIntersections(buffer.lbLines,point,buffer.u_1,buffer.u_2);
 
-		// 
 
 		if( point.size() == 0 )
 		{
