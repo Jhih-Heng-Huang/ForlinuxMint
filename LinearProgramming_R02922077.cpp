@@ -82,19 +82,73 @@ void readInput( constraint& buffer, std::string inputFile )
 Coordinate getIntersection( const ineq& one, const ineq& theOther )
 {
 	Coordinate point;
+	if( one.coefX == 0 )
+	{
+		point.y = one.constant/one.coefY;
 
-	point.x = (one.constant * theOther.coefY - theOther.constant * one.coefY)/
+		if( theOther.coefX == 0 )
+		{
+			point.x = HUGE_VAL;
+			point.y = HUGE_VAL;
+		}
+		else if( theOther.coefY == 0 )
+		{
+			point.x = theOther.constant/theOther.coefX;
+		}
+		else
+		{
+			point.x = (theOther.constant - theOther.coefY * point.y)/theOther.coefX;
+		}
+
+	}
+	else if( one.coefY == 0 )
+	{
+		point.x = one.constant/one.coefX;
+
+		if( theOther.coefX == 0 )
+		{
+			point.y = theOther.constant/theOther.coefY;	
+		}
+		else if( theOther.coefY == 0 )
+		{
+			point.x = HUGE_VAL;
+			point.y = HUGE_VAL;
+		}
+		else
+		{
+			point.y = (theOther.constant - theOther.coefX * point.x)/theOther.coefY;
+		}
+
+	}
+	else if( theOther.coefX == 0 )
+	{
+		point.y = theOther.constant/theOther.coefY;
+
+		point.x = (one.constant - one.coefY * point.y)/one.coefX;
+	}
+	else if( theOther.coefY == 0 )
+	{
+		point.x = theOther.constant/theOther.coefX;
+
+		point.y = (one.constant - one.coefX * point.x)/one.coefY;
+	}
+	else
+	{
+		point.x = (one.constant * theOther.coefY - theOther.constant * one.coefY)/
 				(one.coefX * theOther.coefY - theOther.coefX * one.coefY);
 
-	point.y = (one.constant * theOther.coefX - theOther.constant * one.coefX)/
-				(one.coefY * theOther.coefX - theOther.constant * one.coefX);
+		point.y = (one.constant - one.coefX * point.x)/one.coefY;
+	}
 
 	return point;
 }
 
 double getSlope( const ineq& line )
 {
-	return -(line.coefX / line.coefY);
+	if( line.coefY != 0 )
+		return -(line.coefX / line.coefY);
+	else
+		return HUGE_VAL;
 }
 
 // only for 2D linear programming problem
@@ -113,9 +167,34 @@ void findIntersections( std::vector<ineq>& buffer, std::vector<Coordinate>& poin
 			if(  u_1 <= newPoint.x && newPoint.x <= u_2 )
 			{
 				point.push_back(newPoint);
+				i = i + 2;
+			}
+			else
+			{
+				if( newPoint.x < u_1 )
+				{
+					if( getSlope(buffer[i-1]) < getSlope(buffer[i]) )
+					{
+						buffer.erase(buffer.begin() + i - 1);
+					}
+					else
+					{
+						buffer.erase(buffer.begin() + i);
+					}
+				}
+				else
+				{
+					if( getSlope(buffer[i-1]) > getSlope(buffer[i]) )
+					{
+						buffer.erase(buffer.begin() + i - 1);
+					}
+					else
+					{
+						buffer.erase(buffer.begin() + i);
+					}	
+				}
 			}
 
-			i = i + 2;
 		}
 		else
 		{
@@ -293,6 +372,8 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 {
 	double tmpY, tmpSlope;
 
+	size_t counter = 0;
+
 	for( size_t i = 0; i < buffer.size(); ++i )
 	{
 		tmpY = (buffer[i].constant - buffer[i].coefX * point.x) / buffer[i].coefY;
@@ -301,6 +382,7 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 		if( tmpY == point.y )
 		{
+			++counter;
 			tmpSlope = getSlope(buffer[i]);
 
 			if( maxSlope < tmpSlope )
@@ -315,6 +397,8 @@ void determineSlope( const std::vector<ineq>& buffer, const Coordinate& point, d
 
 		}
 	}
+
+	std::cout << "# of lines has that points : " << counter << std::endl;
 }
 
 void pruningLeft( constraint& buffer, const double& medianX )
@@ -326,17 +410,20 @@ void pruningLeft( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.ubLines[i-1], buffer.ubLines[i] );
 
-		if( tmpPoint.x <= medianX )
+		if( buffer.u_1 <= tmpPoint.x && tmpPoint.x <= buffer.u_2 )
 		{
-			if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+			if( tmpPoint.x <= medianX )
 			{
-				// pruning i-1
-				buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
-			}
-			else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
-			{
-				// pruning i
-				buffer.ubLines.erase(buffer.ubLines.begin() + i);
+				if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+				{
+					// pruning i-1
+					buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
+				}
+				else if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+				{
+					// pruning i
+					buffer.ubLines.erase(buffer.ubLines.begin() + i);
+				}
 			}
 		}
 	}
@@ -346,17 +433,20 @@ void pruningLeft( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
 
-		if( tmpPoint.x <= medianX )
+		if( buffer.u_1 <= tmpPoint.x && tmpPoint.x <= buffer.u_2 )
 		{
-			if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+			if( tmpPoint.x <= medianX )
 			{
-				// pruning i-1
-				buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
-			}
-			else if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
-			{
-				// pruning i
-				buffer.lbLines.erase(buffer.lbLines.begin() + i);
+				if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+				{
+					// pruning i-1
+					buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
+				}
+				else if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+				{
+					// pruning i
+					buffer.lbLines.erase(buffer.lbLines.begin() + i);
+				}
 			}
 		}
 	}
@@ -371,19 +461,23 @@ void pruningRight( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.ubLines[i-1], buffer.ubLines[i] );
 
-		if( medianX <= tmpPoint.x )
+		if( buffer.u_1 <= tmpPoint.x && tmpPoint.x <= buffer.u_2 )
 		{
-			if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+			if( medianX <= tmpPoint.x )
 			{
-				// pruning i-1
-				buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
-			}
-			else if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
-			{
-				// pruning i
-				buffer.ubLines.erase(buffer.ubLines.begin() + i);
+				if( getSlope(buffer.ubLines[i-1]) < getSlope(buffer.ubLines[i]) )
+				{
+					// pruning i-1
+					buffer.ubLines.erase(buffer.ubLines.begin() + (i-1));
+				}
+				else if( getSlope(buffer.ubLines[i-1]) > getSlope(buffer.ubLines[i]) )
+				{
+					// pruning i
+					buffer.ubLines.erase(buffer.ubLines.begin() + i);
+				}
 			}
 		}
+		
 		
 	}
 
@@ -392,19 +486,23 @@ void pruningRight( constraint& buffer, const double& medianX )
 	{
 		tmpPoint = getIntersection( buffer.lbLines[i-1], buffer.lbLines[i] );
 
-		if( medianX <= tmpPoint.x )
+		if( buffer.u_1 <= tmpPoint.x && tmpPoint.x <= buffer.u_2 )
 		{
-			if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+			if( medianX <= tmpPoint.x )
 			{
-				// pruning i-1
-				buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
-			}
-			else if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
-			{
-				// pruning i
-				buffer.lbLines.erase(buffer.lbLines.begin() + i);
+				if( getSlope(buffer.lbLines[i-1]) > getSlope(buffer.lbLines[i]) )
+				{
+					// pruning i-1
+					buffer.lbLines.erase(buffer.lbLines.begin() + (i-1));
+				}
+				else if( getSlope(buffer.lbLines[i-1]) < getSlope(buffer.lbLines[i]) )
+				{
+					// pruning i
+					buffer.lbLines.erase(buffer.lbLines.begin() + i);
+				}
 			}
 		}
+		
 		
 	}
 
@@ -446,6 +544,7 @@ double linearProg_2D_PS( constraint buffer )
 					<< buffer.lbLines[i].constant << std::endl;
 	}	
 	std::cout << std::endl;
+	std::cout << buffer.u_1 << "\t" << buffer.u_2 << std::endl;
 
 	// check whether the range of x-axis is feasible or not
 	if( buffer.u_1 <= buffer.u_2 )
@@ -456,6 +555,7 @@ double linearProg_2D_PS( constraint buffer )
 
 		findIntersections(buffer.lbLines,point,buffer.u_1,buffer.u_2);
 
+		std::cout << "point size = " << point.size() << std::endl;
 
 		if( point.size() == 0 )
 		{
@@ -520,7 +620,7 @@ double linearProg_2D_PS( constraint buffer )
 				else
 				{
 					std::cout << "no feasible solution" << std::endl;
-					return 0;
+					return HUGE_VAL;
 				}
 			}
 		}
@@ -612,7 +712,7 @@ double linearProg_2D_PS( constraint buffer )
 				else
 				{
 					std::cout << "no feasible solution" << std::endl;
-					return 0;
+					return HUGE_VAL;
 				}
 			}
 
@@ -623,7 +723,7 @@ double linearProg_2D_PS( constraint buffer )
 	else
 	{
 		std::cout << "no feasible solution" << std::endl;
-		return 0;
+		return HUGE_VAL;
 	}
 
 }
@@ -640,9 +740,6 @@ int main()
 
 	// pruning & search for 2D linear programming
 	std::cout << "end  solution:" << linearProg_2D_PS( buffer ) << "\n";
-
-	
-	
 
 	return 0;
 }
